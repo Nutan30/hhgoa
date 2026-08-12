@@ -101,13 +101,13 @@ export default function ExportActions({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [format, userPhoto, transform, builderDetails]);
 
-  const handleShareToX = () => {
+  function handleShareToX() {
     const text = encodeURIComponent(
       "Framing my builder moment in Goa 🌴💻\n\nHH Goa 2026\n\n#FrameInGoa"
     );
     const url = `https://twitter.com/intent/tweet?text=${text}`;
     window.open(url, "_blank", "noopener,noreferrer");
-  };
+  }
 
   const disabled = !userPhoto;
 
@@ -120,10 +120,10 @@ export default function ExportActions({
         disabled={disabled || isExporting}
         className={`w-full flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-bold text-base tracking-wide transition-all duration-300 cursor-pointer ${
           disabled
-            ? "bg-white/5 text-white/20 cursor-not-allowed"
+            ? "bg-[#145A3D]/10 text-[#145A3D]/35 cursor-not-allowed"
             : downloadDone
-              ? "bg-emerald-500 text-white shadow-[0_0_30px_rgba(16,185,129,0.3)]"
-              : "bg-[#FFE853] text-[#021a12] hover:bg-[#FFE853]/90 shadow-[0_0_30px_rgba(255,232,83,0.2)] hover:shadow-[0_0_40px_rgba(255,232,83,0.4)]"
+              ? "bg-[#145A3D] text-[#FFF7E6] shadow-[4px_4px_0_#FF2D85]"
+              : "bg-[#FFD21A] text-[#0E3B2E] hover:bg-[#FF2D85] hover:text-white shadow-[4px_4px_0_#0E3B2E]"
         }`}
       >
         {isExporting ? (
@@ -148,8 +148,8 @@ export default function ExportActions({
           disabled={disabled}
           className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 cursor-pointer ${
             disabled
-              ? "bg-white/5 text-white/20 cursor-not-allowed"
-              : "bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:text-white"
+            ? "bg-[#145A3D]/10 text-[#145A3D]/35 cursor-not-allowed"
+              : "bg-[#145A3D] border border-[#0E3B2E] text-[#FFF7E6] hover:bg-[#FFD21A] hover:text-[#0E3B2E]"
           }`}
         >
           <Share2 size={16} />
@@ -161,8 +161,8 @@ export default function ExportActions({
           disabled={disabled}
           className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 cursor-pointer ${
             disabled
-              ? "bg-white/5 text-white/20 cursor-not-allowed"
-              : "bg-[#1D9BF0]/10 border border-[#1D9BF0]/20 text-[#1D9BF0] hover:bg-[#1D9BF0]/20"
+            ? "bg-[#145A3D]/10 text-[#145A3D]/35 cursor-not-allowed"
+              : "bg-[#FF2D85] border border-[#0E3B2E] text-white hover:bg-[#FFD21A] hover:text-[#0E3B2E]"
           }`}
         >
           <XIcon size={16} />

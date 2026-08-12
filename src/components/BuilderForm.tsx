@@ -23,12 +23,14 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
   }, [details, onChange]);
 
   const inputClass =
-    "w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-[#FFE853]/50 focus:ring-1 focus:ring-[#FFE853]/30 transition-all text-sm font-medium";
+    "w-full px-4 py-3 rounded-sm bg-[#FFF7E6] border border-[#0E3B2E] text-[#0E3B2E] placeholder-[#145A3D]/45 focus:outline-none focus:border-[#FF2D85] focus:ring-1 focus:ring-[#FF2D85]/30 transition-all text-sm font-medium";
+  const sectionLabelClass =
+    "text-[#145A3D] text-xs font-black tracking-wider uppercase mb-1.5 block";
 
   return (
-    <div className="w-full space-y-3">
+    <div className="poster-card w-full space-y-3 bg-[#FFF7E6] p-4">
       <label className="block">
-        <span className="text-white/60 text-xs font-semibold tracking-wider uppercase mb-1.5 block">
+        <span className={sectionLabelClass}>
           Name
         </span>
         <input
@@ -43,7 +45,7 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
       </label>
 
       <label className="block">
-        <span className="text-white/60 text-xs font-semibold tracking-wider uppercase mb-1.5 block">
+        <span className={sectionLabelClass}>
           Stack / Role
         </span>
         <input
@@ -58,7 +60,7 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
       </label>
 
       <div>
-        <span className="text-white/60 text-xs font-semibold tracking-wider uppercase mb-1.5 block">
+        <span className={sectionLabelClass}>
           Builder Title
         </span>
         <div className="flex gap-2">
@@ -74,7 +76,7 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
           <button
             id="generate-title-btn"
             onClick={handleGenerateTitle}
-            className="flex items-center gap-1.5 px-4 py-3 rounded-xl bg-[#FF3B81]/20 border border-[#FF3B81]/30 hover:bg-[#FF3B81]/30 text-[#FF3B81] text-xs font-bold transition-all cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 px-4 py-3 rounded-sm bg-[#FF2D85] border border-[#0E3B2E] hover:bg-[#FFD21A] hover:text-[#0E3B2E] text-white text-xs font-black transition-all cursor-pointer whitespace-nowrap"
           >
             <Sparkles size={14} />
             Generate

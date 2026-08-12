@@ -18,10 +18,10 @@ export default function FormatSelector({
       <button
         id="select-format-a"
         onClick={() => onChange("formatA")}
-        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 border-2 cursor-pointer ${
+        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-sm font-black text-sm tracking-wide transition-all duration-300 border-2 border-[#0E3B2E] cursor-pointer ${
           selected === "formatA"
-            ? "bg-[#FFE853] text-[#021a12] border-[#FFE853] shadow-[0_0_20px_rgba(255,232,83,0.3)]"
-            : "bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:border-white/20"
+            ? "bg-[#FF2D85] text-white shadow-[4px_4px_0_#0E3B2E] -translate-y-0.5"
+            : "bg-[#FFF7E6] text-[#145A3D] hover:bg-[#FFD21A]"
         }`}
       >
         <User size={18} />
@@ -30,10 +30,10 @@ export default function FormatSelector({
       <button
         id="select-format-b"
         onClick={() => onChange("formatB")}
-        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 border-2 cursor-pointer ${
+        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-sm font-black text-sm tracking-wide transition-all duration-300 border-2 border-[#0E3B2E] cursor-pointer ${
           selected === "formatB"
-            ? "bg-[#FFE853] text-[#021a12] border-[#FFE853] shadow-[0_0_20px_rgba(255,232,83,0.3)]"
-            : "bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:border-white/20"
+            ? "bg-[#FF2D85] text-white shadow-[4px_4px_0_#0E3B2E] -translate-y-0.5"
+            : "bg-[#FFF7E6] text-[#145A3D] hover:bg-[#FFD21A]"
         }`}
       >
         <CreditCard size={18} />

@@ -59,17 +59,17 @@ export default function PhotoUploader({
           onClick={() => inputRef.current?.click()}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className="w-full flex flex-col items-center justify-center gap-3 p-8 rounded-2xl border-2 border-dashed border-[#FFE853]/40 bg-[#FFE853]/5 hover:bg-[#FFE853]/10 hover:border-[#FFE853]/60 transition-all duration-300 cursor-pointer group"
+          className="poster-card w-full flex flex-col items-center justify-center gap-3 p-8 border-2 border-dashed border-[#145A3D] bg-[#FFF7E6] hover:bg-[#FFD21A]/30 transition-all duration-300 cursor-pointer group"
         >
-          <div className="w-16 h-16 rounded-full bg-[#FFE853]/10 flex items-center justify-center group-hover:bg-[#FFE853]/20 transition-colors">
+          <div className="w-16 h-16 rounded-full bg-[#FFD21A] border border-[#0E3B2E] flex items-center justify-center group-hover:bg-[#FF2D85] transition-colors">
             <Upload
               size={28}
-              className="text-[#FFE853] group-hover:scale-110 transition-transform"
+              className="text-[#0E3B2E] group-hover:scale-110 transition-transform"
             />
           </div>
           <div className="text-center">
-            <p className="text-white font-bold text-base">Upload Your Photo</p>
-            <p className="text-white/50 text-xs mt-1">
+            <p className="text-[#145A3D] font-black text-base">Upload Your Photo</p>
+            <p className="text-[#0E3B2E]/60 text-xs mt-1">
               JPG, PNG, or HEIC • Drag & drop or tap to browse
             </p>
           </div>
@@ -78,7 +78,7 @@ export default function PhotoUploader({
         <button
           id="change-photo-btn"
           onClick={() => inputRef.current?.click()}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white/70 hover:text-white transition-all text-sm font-medium cursor-pointer"
+          className="poster-card w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#FFF7E6] hover:bg-[#FFD21A] text-[#145A3D] transition-all text-sm font-black cursor-pointer"
         >
           <ImagePlus size={16} />
           Change Photo
