@@ -28,7 +28,9 @@ export default function PreviewCanvas({
   const lastPointer = useRef({ x: 0, y: 0 });
   const lastPinchDist = useRef(0);
   const transformRef = useRef(transform);
-  transformRef.current = transform;
+  useEffect(() => {
+    transformRef.current = transform;
+  }, [transform]);
 
   const geo = format === "formatA" ? FORMAT_A_GEOMETRY : FORMAT_B_GEOMETRY;
 
@@ -145,7 +147,7 @@ export default function PreviewCanvas({
   return (
     <div
       ref={containerRef}
-      className="relative w-full rounded-2xl overflow-hidden bg-black/20 border border-white/5 shadow-2xl"
+      className="poster-card relative w-full overflow-hidden bg-[#145A3D]"
       style={{ aspectRatio: `${aspectRatio}` }}
     >
       <canvas

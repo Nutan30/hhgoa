@@ -64,10 +64,10 @@ export default function Home() {
 
   if (!overlaysReady) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#021a12]">
+      <div className="min-h-screen flex items-center justify-center bg-[#FFF7E6] text-[#0E3B2E]">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-3 border-[#FFE853]/30 border-t-[#FFE853] rounded-full animate-spin" />
-          <p className="text-white/50 text-sm font-medium">
+          <div className="w-10 h-10 border-3 border-[#0E3B2E]/20 border-t-[#FF2D85] rounded-full animate-spin" />
+          <p className="text-[#0E3B2E]/60 text-sm font-bold tracking-wide">
             Loading HH Goa assets...
           </p>
         </div>
@@ -76,26 +76,34 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[#021a12] text-white">
+    <div className="min-h-screen overflow-hidden text-[#0E3B2E]">
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-1/2 -left-1/4 w-[800px] h-[800px] rounded-full bg-[#0a5d30]/20 blur-[120px]" />
-        <div className="absolute -bottom-1/3 -right-1/4 w-[600px] h-[600px] rounded-full bg-[#FF3B81]/8 blur-[100px]" />
-        <div className="absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full bg-[#FFE853]/5 blur-[80px]" />
+        <span className="doodle hidden md:block top-44 left-[3%] text-7xl text-[#145A3D]/20 -rotate-12">🌴</span>
+        <span className="doodle hidden lg:block top-[36%] right-[3%] text-6xl text-[#FF2D85]/25 rotate-12">☀</span>
+        <span className="doodle hidden md:block bottom-16 left-[6%] text-5xl text-[#FFD21A] rotate-[-20deg]">〰〰</span>
       </div>
 
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
 
         {/* Main content */}
-        <main className="flex-1 w-full max-w-6xl mx-auto px-4 pb-8">
+        <main className="flex-1 w-full max-w-6xl mx-auto px-4 pb-10">
+          <section className="relative pt-2 pb-7 md:pb-9 text-center">
+            <p className="inline-block bg-[#FFD21A] px-3 py-1 text-xs font-black tracking-[0.18em] uppercase -rotate-1 border border-[#0E3B2E]">Make it yours</p>
+            <h2 className="poster-title mt-3 text-6xl leading-[0.78] sm:text-7xl md:text-8xl">
+              <span className="block text-[#145A3D]">FRAME YOUR</span>
+              <span className="block text-[#FF2D85]">BUILDER</span>
+            </h2>
+            <div className="mx-auto mt-4 h-1 w-28 bg-[#FFD21A] border border-[#0E3B2E]" />
+          </section>
           {/* Format selector */}
           <div className="mb-6">
             <FormatSelector selected={format} onChange={handleFormatChange} />
           </div>
 
           {/* Desktop: side-by-side | Mobile: stacked */}
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          <div className="flex flex-col lg:flex-row gap-7 lg:gap-8">
             {/* Preview column */}
             <div className="w-full lg:flex-1 lg:max-w-[560px]">
               <PreviewCanvas
@@ -125,8 +133,8 @@ export default function Home() {
 
               {/* Builder form (only for Format B) */}
               {format === "formatB" && (
-                <div className="pt-2 border-t border-white/5">
-                  <h3 className="text-xs font-semibold tracking-wider uppercase text-[#FFE853]/70 mb-3">
+                <div className="pt-4 border-t border-[#0E3B2E]/20">
+                  <h3 className="text-xs font-black tracking-[0.16em] uppercase text-[#145A3D] mb-3">
                     Builder Details
                   </h3>
                   <BuilderForm
@@ -152,7 +160,7 @@ export default function Home() {
         </main>
 
         {/* Footer */}
-        <footer className="text-center py-4 text-white/20 text-xs">
+        <footer className="mt-4 text-center py-5 px-4 bg-[#0E3B2E] text-[#FFF7E6]/80 text-xs border-t-4 border-[#FFD21A]">
           <p>
             HH Goa 2026 • Frame in Goa •{" "}
             <span className="text-[#FF3B81]/50">#FrameInGoa</span>
