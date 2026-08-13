@@ -74,7 +74,7 @@ export default function ExportActions({ format, userPhoto, transform, builderDet
   }, [format, userPhoto, transform, builderDetails]);
 
   const handleShareToX = () => {
-    const text = encodeURIComponent("Framing my builder moment in Goa 🌴💻\n\nHH Goa 2026\n\n#FrameInGoa");
+    const text = encodeURIComponent("🌴 My Hacker Goa Builder Card is ready!\n\nLooking forward to meeting passionate builders, sharing ideas, and creating something amazing in Goa. 🚀\n\nGet yours:\nhttps://hhgoa-flax.vercel.app\n\n#FrameInGoa #HHGoa2026");
     const url = `https://twitter.com/intent/tweet?text=${text}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };
