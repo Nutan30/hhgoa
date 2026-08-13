@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 import type { FormatType, TransformState, BuilderDetails } from "@/lib/types";
-import { processUploadedFile, loadImage } from "@/lib/imageUtils";
+import { processUploadedFile, loadImage, preloadHeicDecoder } from "@/lib/imageUtils";
 import { preloadOverlays } from "@/lib/canvas";
 
 import Header from "@/components/Header";
@@ -22,6 +22,9 @@ export default function Home() {
   const [overlaysReady, setOverlaysReady] = useState(false);
 
   useEffect(() => {
+    // Warm up the HEIC decoder in the background so the first photo
+    // upload converts quickly instead of paying the init cost on demand.
+    preloadHeicDecoder().catch(() => {});
     preloadOverlays()
       .then(() => setOverlaysReady(true))
       .catch((err) => console.error("Failed to preload overlays:", String(err).replace(/[\r\n]/g, " ")));
