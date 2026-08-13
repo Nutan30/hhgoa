@@ -237,57 +237,57 @@ function renderBuilderText(
   geo: FrameGeometry,
   details: BuilderDetails
 ): void {
-  const leftX = 460;
-  const maxWidth = 1340; // Safe area width from X=460 to X=1800
+  const leftX = 500;
+  const maxWidth = 1300; // Safe area width from X=500 to X=1800
+  const fontFamily = "'Comic Sans MS', 'Comic Sans', cursive";
+  const fontSize = 100;
+  const textColor = "#FFE9A8";
 
-  // 1. Name — Value line below NAME label (Y = 2195)
+  // 1. Name — vertically aligned with the person icon
   if (details.name && details.name.trim() !== "") {
     ctx.save();
     const nameText = details.name.toUpperCase();
-    const fontFamily = "'Space Grotesk', 'Inter', 'Arial Black', sans-serif";
-    const fontSize = fitText(ctx, nameText, maxWidth, 52, fontFamily);
+    const fittedFontSize = fitText(ctx, nameText, maxWidth, fontSize, fontFamily);
 
-    ctx.font = `900 ${fontSize}px ${fontFamily}`;
-    ctx.fillStyle = "#FFE853"; // Vibrant tropical sun yellow
+    ctx.font = `bold ${fittedFontSize}px ${fontFamily}`;
+    ctx.fillStyle = textColor;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText(nameText, leftX, 2195);
+    ctx.fillText(nameText, leftX, 2150);
     ctx.restore();
   }
 
-  // 2. Stack / Role — Value line below YOUR STACK / ROLE label (Y = 2465)
+  // 2. Stack / Role — vertically aligned with the code icon
   if (details.stack && details.stack.trim() !== "") {
     ctx.save();
     const stackText = details.stack;
-    const fontFamily = "'Inter', 'Arial', sans-serif";
-    const fontSize = fitText(ctx, stackText, maxWidth, 44, fontFamily);
+    const fittedFontSize = fitText(ctx, stackText, maxWidth, fontSize, fontFamily);
 
-    ctx.font = `600 ${fontSize}px ${fontFamily}`;
-    ctx.fillStyle = "#FFFFFF"; // Crisp white
+    ctx.font = `bold ${fittedFontSize}px ${fontFamily}`;
+    ctx.fillStyle = textColor;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText(stackText, leftX, 2465);
+    ctx.fillText(stackText, leftX, 2420);
     ctx.restore();
   }
 
-  // 3. Builder Title — Sunset pink pill badge below BUILDER TITLE label (Y = 2730)
+  // 3. Builder Title — vertically aligned with the star icon
   if (details.title && details.title.trim() !== "") {
     ctx.save();
     const titleText = details.title.startsWith("⚡")
       ? details.title
       : `⚡ ${details.title}`;
-    const fontFamily = "'Space Grotesk', 'Inter', sans-serif";
-    const fontSize = fitText(ctx, titleText, maxWidth - 50, 40, fontFamily);
+    const fittedFontSize = fitText(ctx, titleText, maxWidth - 50, fontSize, fontFamily);
 
-    ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    ctx.font = `bold ${fittedFontSize}px ${fontFamily}`;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
 
     const metrics = ctx.measureText(titleText);
     const pillWidth = Math.min(metrics.width + 44, maxWidth);
-    const pillHeight = Math.max(48, fontSize + 14);
+    const pillHeight = Math.max(48, fittedFontSize + 14);
     const pillX = leftX;
-    const pillY = 2730;
+    const pillY = 2690;
 
     // Draw sunset pink tag pill background inside the value area
     ctx.fillStyle = "#FF3B81";
@@ -302,7 +302,7 @@ function renderBuilderText(
     ctx.fill();
 
     // Draw pill text
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = textColor;
     ctx.fillText(titleText, pillX + 22, pillY);
     ctx.restore();
   }
