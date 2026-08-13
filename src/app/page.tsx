@@ -186,7 +186,7 @@ export default function Home() {
 
             {/* ── Hero brand: PNG base + floating SVG overlay ── */}
             <div
-              className="relative w-full max-w-[1800px] mx-auto"
+              className="relative w-full max-w-[1600px] mx-auto"
               aria-label="Hacker House Goa"
             >
               {/* HACKER HOUSE PNG — static, never animates */}
@@ -208,7 +208,6 @@ export default function Home() {
                 style={{
                   left: "50%",
                   top: "52%",
-                  width: "clamp(80px, 22%, 160px)",
                   height: "auto",
                   transform: "translate(-50%, -50%)",
                 }}
