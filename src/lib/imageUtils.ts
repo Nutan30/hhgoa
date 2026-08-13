@@ -3,51 +3,69 @@
  */
 
 /**
- * Converts a HEIC/HEIF blob to a JPEG blob using heic2any.
+ * Converts a HEIC/HEIF blob to a JPEG blob with the reference project's
+ * browser-compatible HEIF decoder.
  */
 export async function convertHeicToJpeg(file: File): Promise<Blob> {
-  // Dynamic import to avoid SSR issues
-  const heic2any = (await import("heic2any")).default;
-  const result = await heic2any({
+  const { heicTo } = await import("heic-to");
+  const jpegBlob = await heicTo({
     blob: file,
-    toType: "image/jpeg",
+    type: "image/jpeg",
     quality: 0.92,
   });
-  // heic2any can return Blob or Blob[]
-  if (Array.isArray(result)) {
-    return result[0];
+
+  if (jpegBlob.size === 0 || jpegBlob.type !== "image/jpeg") {
+    throw new Error("HEIC decoder did not produce a valid JPEG image.");
   }
-  return result;
+
+  return jpegBlob;
 }
 
+const HEIF_BRANDS = new Set(["mif1", "msf1", "heic", "heix", "hevc", "hevx"]);
+
 /**
- * Check if a file is HEIC/HEIF format.
+ * Check ISO-BMFF `ftyp` bytes for HEIF/HEIC brands, with metadata fallback.
  */
-export function isHeicFile(file: File): boolean {
+export async function isHeicFile(file: File): Promise<boolean> {
   const type = file.type.toLowerCase();
   const name = file.name.toLowerCase();
-  return (
+  const metadataIndicatesHeic =
     type === "image/heic" ||
     type === "image/heif" ||
     name.endsWith(".heic") ||
-    name.endsWith(".heif")
-  );
+    name.endsWith(".heif");
+
+  const header = new Uint8Array(await file.slice(0, 32).arrayBuffer());
+  if (header.length >= 12 && String.fromCharCode(...header.slice(4, 8)) === "ftyp") {
+    for (let offset = 8; offset + 4 <= header.length; offset += 4) {
+      if (HEIF_BRANDS.has(String.fromCharCode(...header.slice(offset, offset + 4)))) {
+        return true;
+      }
+    }
+  }
+
+  return metadataIndicatesHeic;
 }
 
 /**
  * Process an uploaded file: converts HEIC if needed, returns an object URL.
  */
 export async function processUploadedFile(file: File): Promise<string> {
-  if (isHeicFile(file)) {
+  if (await isHeicFile(file)) {
+    let jpegBlob: Blob;
     try {
-      const jpegBlob = await convertHeicToJpeg(file);
-      return URL.createObjectURL(jpegBlob);
-    } catch (err) {
-      console.warn("HEIC conversion failed, attempting direct load:", err);
-      // Some browsers can handle HEIC natively
-      return URL.createObjectURL(file);
+      jpegBlob = await convertHeicToJpeg(file);
+    } catch (error) {
+      throw new Error("Unable to convert this HEIC/HEIF photo to JPEG.", { cause: error });
     }
+
+    if (jpegBlob.size === 0 || jpegBlob.type !== "image/jpeg") {
+      throw new Error("HEIC/HEIF conversion did not produce a valid JPEG image.");
+    }
+
+    return URL.createObjectURL(jpegBlob);
   }
+
   return URL.createObjectURL(file);
 }
 
