@@ -26,6 +26,7 @@ export default function PreviewCanvas({
   const isDragging = useRef(false);
   const lastPointer = useRef({ x: 0, y: 0 });
   const lastPinchDist = useRef(0);
+  const lastPinchMid = useRef({ x: 0, y: 0 });
   const transformRef = useRef(transform);
   transformRef.current = transform;
 
@@ -73,17 +74,24 @@ export default function PreviewCanvas({
 
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
+      // On touch devices, only intercept 2-finger pinch so the page can
+      // scroll naturally with a single finger.
       if (!userPhoto) return;
       if (e.touches.length === 1) {
-        isDragging.current = true;
-        lastPointer.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        // Single finger: let the browser handle scroll — do not drag.
+        return;
       } else if (e.touches.length === 2) {
+        e.preventDefault();
         isDragging.current = false;
         const dist = Math.hypot(
           e.touches[0].clientX - e.touches[1].clientX,
           e.touches[0].clientY - e.touches[1].clientY
         );
         lastPinchDist.current = dist;
+        lastPinchMid.current = {
+          x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+          y: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+        };
       }
     },
     [userPhoto]
@@ -91,25 +99,39 @@ export default function PreviewCanvas({
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent) => {
-      e.preventDefault();
       const t = transformRef.current;
-      if (e.touches.length === 1 && isDragging.current) {
-        const scale = getDisplayScale();
-        const dx = (e.touches[0].clientX - lastPointer.current.x) * scale;
-        const dy = (e.touches[0].clientY - lastPointer.current.y) * scale;
-        lastPointer.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-        onTransformChange({ ...t, offsetX: t.offsetX + dx, offsetY: t.offsetY + dy });
+      if (e.touches.length === 1) {
+        // Single finger: allow the page to scroll.
+        return;
       } else if (e.touches.length === 2) {
+        e.preventDefault();
         const dist = Math.hypot(
           e.touches[0].clientX - e.touches[1].clientX,
           e.touches[0].clientY - e.touches[1].clientY
         );
+        const mid = {
+          x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+          y: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+        };
+
+        let next = t;
+        // Pinch zoom based on change in distance between fingers
         if (lastPinchDist.current > 0) {
           const pinchScale = dist / lastPinchDist.current;
           const newScale = Math.max(0.5, Math.min(3, t.scale * pinchScale));
-          onTransformChange({ ...t, scale: newScale });
+          next = { ...next, scale: newScale };
         }
+        // Two-finger pan: translate by midpoint movement
+        const displayScale = getDisplayScale();
+        const dx = (mid.x - lastPinchMid.current.x) * displayScale;
+        const dy = (mid.y - lastPinchMid.current.y) * displayScale;
+        if (dx !== 0 || dy !== 0) {
+          next = { ...next, offsetX: next.offsetX + dx, offsetY: next.offsetY + dy };
+        }
+
         lastPinchDist.current = dist;
+        lastPinchMid.current = mid;
+        onTransformChange(next);
       }
     },
     [getDisplayScale, onTransformChange]
@@ -134,7 +156,7 @@ export default function PreviewCanvas({
     >
       <canvas
         ref={canvasRef}
-        className="w-full h-full cursor-grab active:cursor-grabbing touch-none"
+        className="w-full h-full cursor-grab active:cursor-grabbing touch-pan-y"
         style={{ display: "block" }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
