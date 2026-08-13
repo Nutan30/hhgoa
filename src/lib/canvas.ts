@@ -1,15 +1,3 @@
-/**
- * Canvas composition engine for rendering Format A (PFP) and Format B (Builder ID).
- *
- * Architecture:
- *   1. Create offscreen canvas at native overlay resolution
- *   2. Clip to photo window geometry (circle or rounded rect)
- *   3. Draw user photo with transform (scale, offset) inside clip
- *   4. Reset clip, draw overlay artwork on top
- *   5. For Format B: render text fields (name, stack, title)
- *   6. If output resolution differs, scale down to final output
- */
-
 import {
   type FormatType,
   type TransformState,
