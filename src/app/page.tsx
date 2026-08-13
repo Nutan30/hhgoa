@@ -208,7 +208,6 @@ export default function Home() {
                 style={{
                   left: "50%",
                   top: "52%",
-                  width: "clamp(80px, 22%, 160px)",
                   height: "auto",
                   transform: "translate(-50%, -50%)",
                 }}
