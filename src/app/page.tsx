@@ -170,7 +170,7 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 pt-6 pb-5 md:pt-8 md:pb-6">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 pt-6 pb-5 md:pt-8 md:pb-6">
 
           {/* ── Main poster heading ── */}
           <div className="relative flex flex-col items-center text-center mb-4">
@@ -186,7 +186,7 @@ export default function Home() {
 
             {/* ── Hero brand: PNG base + floating SVG overlay ── */}
             <div
-              className="relative w-full max-w-[680px] mx-auto"
+              className="relative w-full max-w-[1800px] mx-auto"
               aria-label="Hacker House Goa"
             >
               {/* HACKER HOUSE PNG — static, never animates */}
