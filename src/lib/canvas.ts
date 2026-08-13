@@ -285,7 +285,7 @@ function renderBuilderText(
 
     const metrics = ctx.measureText(titleText);
     const pillWidth = Math.min(metrics.width + 44, maxWidth);
-    const pillHeight = Math.max(48, fittedFontSize + 14);
+    const pillHeight = Math.max(48, fittedFontSize + 16);
     const pillX = leftX;
     const pillY = 2690;
 
