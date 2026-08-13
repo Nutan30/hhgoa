@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Download, Share2, Check, Loader2 } from "lucide-react";
+import { Download, Share2, Check, Loader2, X } from "lucide-react";
 
 function XIcon({ size = 16 }: { size?: number }) {
   return (
@@ -24,6 +24,8 @@ interface ExportActionsProps {
 export default function ExportActions({ format, userPhoto, transform, builderDetails }: ExportActionsProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [downloadDone, setDownloadDone] = useState(false);
+  const [shareXNotice, setShareXNotice] = useState(false);
+  const [isSharingToX, setIsSharingToX] = useState(false);
 
   const getFilename = () => {
     if (format === "formatB" && builderDetails?.name) {
@@ -73,11 +75,37 @@ export default function ExportActions({ format, userPhoto, transform, builderDet
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [format, userPhoto, transform, builderDetails]);
 
-  const handleShareToX = () => {
-    const text = encodeURIComponent("🌴 My Hacker Goa Builder Card is ready!\n\nLooking forward to meeting passionate builders, sharing ideas, and creating something amazing in Goa. 🚀\n\nGet yours:\nhttps://hhgoa-flax.vercel.app\n\n#FrameInGoa #HHGoa2026");
-    const url = `https://twitter.com/intent/tweet?text=${text}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
+  const handleShareToX = useCallback(async () => {
+    if (!userPhoto || isSharingToX) return;
+    setIsSharingToX(true);
+    try {
+      // 1) Generate the poster PNG
+      const blob = await exportCanvasPNG(format, userPhoto, transform, builderDetails);
+
+      // 2) Download the file so the user can attach it to their post
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = getFilename();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // 3) Show popup telling the user to attach the downloaded file
+      setShareXNotice(true);
+
+      // 4) Open X with the pre-filled post text
+      const text = encodeURIComponent("🌴 My Hacker Goa Builder Card is ready!\n\nLooking forward to meeting passionate builders, sharing ideas, and creating something amazing in Goa. 🚀\n\nGet yours:\nhttps://hhgoa-flax.vercel.app\n\n#FrameInGoa #HHGoa2026");
+      const shareUrl = `https://twitter.com/intent/tweet?text=${text}`;
+      window.open(shareUrl, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      console.error("Share to X failed:", String(err).replace(/[\r\n]/g, " "));
+    } finally {
+      setIsSharingToX(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [format, userPhoto, transform, builderDetails, isSharingToX]);
 
   const disabled = !userPhoto;
 
@@ -114,13 +142,43 @@ export default function ExportActions({ format, userPhoto, transform, builderDet
         <button
           id="share-x-btn"
           onClick={handleShareToX}
-          disabled={disabled}
+          disabled={disabled || isSharingToX}
           className="hh-btn hh-btn-pink flex-1 py-3 text-[11px]"
         >
-          <XIcon size={15} />
-          Share to X
+          {isSharingToX ? <Loader2 size={15} className="animate-spin" /> : <XIcon size={15} />}
+          {isSharingToX ? "Preparing..." : "Share to X"}
         </button>
       </div>
+
+      {/* Popup: file downloaded — attach it to your X post */}
+      {shareXNotice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+          <div className="w-full max-w-md bg-[#075C35] border-2 border-[#FEE101] p-5 shadow-[5px_5px_0px_#000]">
+            <div className="mb-3 flex items-center justify-between">
+              <span className="font-victor text-xs font-bold uppercase tracking-wider text-[#FEE101]">
+                File Downloaded
+              </span>
+              <button
+                onClick={() => setShareXNotice(false)}
+                className="text-[#FEE101]"
+                aria-label="Close popup"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <p className="font-victor text-[13px] text-[#FFFBE8] leading-relaxed">
+              Your poster has been downloaded. Open the X tab and{" "}
+              <span className="text-[#FEE101] font-bold">attach the downloaded file</span> to your post.
+            </p>
+            <button
+              onClick={() => setShareXNotice(false)}
+              className="hh-btn hh-btn-primary mt-4 w-full py-3"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
