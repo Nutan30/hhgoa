@@ -108,19 +108,23 @@ export function renderFrame(
 
     // Create clipping path
     if (geo.clipType === "circle" && geo.circleCenterX !== undefined) {
+      // Use a clip radius slightly larger than the hole so the photo bleeds
+      // under the frame border ring, hiding any anti-aliasing or light photo
+      // edges that would otherwise show as a gap against the cream border.
+      const clipRadius = geo.circleRadius! + 6;
+      const clipSize = clipRadius * 2;
+
       ctx.beginPath();
       ctx.arc(
         geo.circleCenterX,
         geo.circleCenterY!,
-        geo.circleRadius!,
+        clipRadius,
         0,
         Math.PI * 2
       );
       ctx.closePath();
       ctx.clip();
 
-      // Compute cover fit within the circle bounding box
-      const clipSize = geo.circleRadius! * 2;
       const fit = computeCoverFit(
         userPhoto.naturalWidth,
         userPhoto.naturalHeight,
@@ -128,11 +132,10 @@ export function renderFrame(
         clipSize
       );
 
-      // Apply transform
       const cx = geo.circleCenterX;
       const cy = geo.circleCenterY!;
-      const baseX = cx - geo.circleRadius! + fit.x;
-      const baseY = cy - geo.circleRadius! + fit.y;
+      const baseX = cx - clipRadius + fit.x;
+      const baseY = cy - clipRadius + fit.y;
 
       ctx.translate(cx, cy);
       ctx.scale(transform.scale, transform.scale);

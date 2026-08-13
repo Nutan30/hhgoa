@@ -23,18 +23,14 @@ export default function PreviewCanvas({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Drag state refs (avoid re-renders during drag)
   const isDragging = useRef(false);
   const lastPointer = useRef({ x: 0, y: 0 });
   const lastPinchDist = useRef(0);
   const transformRef = useRef(transform);
-  useEffect(() => {
-    transformRef.current = transform;
-  }, [transform]);
+  transformRef.current = transform;
 
   const geo = format === "formatA" ? FORMAT_A_GEOMETRY : FORMAT_B_GEOMETRY;
 
-  // Compute display scale factor (canvas native → displayed size)
   const getDisplayScale = useCallback((): number => {
     const canvas = canvasRef.current;
     if (!canvas) return 1;
@@ -42,14 +38,12 @@ export default function PreviewCanvas({
     return geo.overlayWidth / displayWidth;
   }, [geo.overlayWidth]);
 
-  // Render loop
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     renderFrame(canvas, format, userPhoto, transform, builderDetails);
   }, [format, userPhoto, transform, builderDetails]);
 
-  // ---- Mouse drag ----
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
       if (!userPhoto) return;
@@ -68,11 +62,7 @@ export default function PreviewCanvas({
       const dy = (e.clientY - lastPointer.current.y) * scale;
       lastPointer.current = { x: e.clientX, y: e.clientY };
       const t = transformRef.current;
-      onTransformChange({
-        ...t,
-        offsetX: t.offsetX + dx,
-        offsetY: t.offsetY + dy,
-      });
+      onTransformChange({ ...t, offsetX: t.offsetX + dx, offsetY: t.offsetY + dy });
     },
     [getDisplayScale, onTransformChange]
   );
@@ -81,16 +71,12 @@ export default function PreviewCanvas({
     isDragging.current = false;
   }, []);
 
-  // ---- Touch drag + pinch ----
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
       if (!userPhoto) return;
       if (e.touches.length === 1) {
         isDragging.current = true;
-        lastPointer.current = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY,
-        };
+        lastPointer.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       } else if (e.touches.length === 2) {
         isDragging.current = false;
         const dist = Math.hypot(
@@ -111,15 +97,8 @@ export default function PreviewCanvas({
         const scale = getDisplayScale();
         const dx = (e.touches[0].clientX - lastPointer.current.x) * scale;
         const dy = (e.touches[0].clientY - lastPointer.current.y) * scale;
-        lastPointer.current = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY,
-        };
-        onTransformChange({
-          ...t,
-          offsetX: t.offsetX + dx,
-          offsetY: t.offsetY + dy,
-        });
+        lastPointer.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        onTransformChange({ ...t, offsetX: t.offsetX + dx, offsetY: t.offsetY + dy });
       } else if (e.touches.length === 2) {
         const dist = Math.hypot(
           e.touches[0].clientX - e.touches[1].clientX,
@@ -141,14 +120,17 @@ export default function PreviewCanvas({
     lastPinchDist.current = 0;
   }, []);
 
-  // Aspect ratio for the container
   const aspectRatio = geo.overlayWidth / geo.overlayHeight;
 
   return (
     <div
       ref={containerRef}
-      className="poster-card relative w-full overflow-hidden bg-[#145A3D]"
-      style={{ aspectRatio: `${aspectRatio}` }}
+      className="relative border-2 border-[#0E3B2E] shadow-[4px_4px_0px_#0E3B2E]"
+      style={{
+        aspectRatio: `${aspectRatio}`,
+        maxHeight: "76vh",
+        width: `min(100%, calc(76vh * ${aspectRatio}))`,
+      }}
     >
       <canvas
         ref={canvasRef}
@@ -163,12 +145,23 @@ export default function PreviewCanvas({
         onTouchEnd={handleTouchEnd}
       />
 
-      {/* Overlay hint when no photo */}
       {!userPhoto && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <p className="text-white/30 text-sm font-medium">
-            Upload a photo to get started
-          </p>
+          {/* Circular placeholder centered in the photo area */}
+          <div className="flex flex-col items-center gap-2">
+            <div
+              className="rounded-full border-2 border-dashed border-[#0E3B2E]/20 bg-[#0E3B2E]/5 flex items-center justify-center"
+              style={{ width: "22%", aspectRatio: "1" }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" className="w-1/2 h-1/2 opacity-20">
+                <circle cx="12" cy="8" r="4" stroke="#0E3B2E" strokeWidth="1.5"/>
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#0E3B2E" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <p className="text-[#0E3B2E]/25 text-[10px] font-mono tracking-wide">
+              Upload a photo to get started
+            </p>
+          </div>
         </div>
       )}
     </div>

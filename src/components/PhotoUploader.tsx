@@ -9,10 +9,7 @@ interface PhotoUploaderProps {
   onFileSelected: (file: File) => void;
 }
 
-export default function PhotoUploader({
-  hasPhoto,
-  onFileSelected,
-}: PhotoUploaderProps) {
+export default function PhotoUploader({ hasPhoto, onFileSelected }: PhotoUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = useCallback(
@@ -20,7 +17,6 @@ export default function PhotoUploader({
       const file = e.target.files?.[0];
       if (file) {
         onFileSelected(file);
-        // Reset input so same file can be re-selected
         e.target.value = "";
       }
     },
@@ -31,9 +27,7 @@ export default function PhotoUploader({
     (e: React.DragEvent) => {
       e.preventDefault();
       const file = e.dataTransfer.files?.[0];
-      if (file && file.type.startsWith("image/")) {
-        onFileSelected(file);
-      }
+      if (file && file.type.startsWith("image/")) onFileSelected(file);
     },
     [onFileSelected]
   );
@@ -59,18 +53,15 @@ export default function PhotoUploader({
           onClick={() => inputRef.current?.click()}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className="poster-card w-full flex flex-col items-center justify-center gap-3 p-8 border-2 border-dashed border-[#145A3D] bg-[#FFF7E6] hover:bg-[#FFD21A]/30 transition-all duration-300 cursor-pointer group"
+          className="w-full flex flex-col items-center justify-center gap-2 p-5 border-2 border-dashed border-[#145A3D] bg-[#FFF7E6] hover:bg-[#FFD21A]/20 transition-all duration-200 cursor-pointer group"
         >
-          <div className="w-16 h-16 rounded-full bg-[#FFD21A] border border-[#0E3B2E] flex items-center justify-center group-hover:bg-[#FF2D85] transition-colors">
-            <Upload
-              size={28}
-              className="text-[#0E3B2E] group-hover:scale-110 transition-transform"
-            />
+          <div className="w-11 h-11 border-2 border-[#145A3D] bg-[#145A3D]/10 flex items-center justify-center group-hover:bg-[#FFD21A]/40 transition-colors">
+            <Upload size={22} className="text-[#145A3D]" />
           </div>
           <div className="text-center">
-            <p className="text-[#145A3D] font-black text-base">Upload Your Photo</p>
-            <p className="text-[#0E3B2E]/60 text-xs mt-1">
-              JPG, PNG, or HEIC • Drag & drop or tap to browse
+            <p className="text-[#0E3B2E] font-bold text-base tracking-wide">Upload Your Photo</p>
+            <p className="text-[#0E3B2E]/50 text-xs mt-1 font-mono">
+              JPG, PNG, or HEIC · Drag & drop or tap to browse
             </p>
           </div>
         </button>
@@ -78,7 +69,7 @@ export default function PhotoUploader({
         <button
           id="change-photo-btn"
           onClick={() => inputRef.current?.click()}
-          className="poster-card w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#FFF7E6] hover:bg-[#FFD21A] text-[#145A3D] transition-all text-sm font-black cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 border-2 border-[#0E3B2E] bg-[#FFF7E6] hover:bg-[#FFD21A]/30 text-[#0E3B2E] transition-all text-sm font-bold tracking-wide cursor-pointer shadow-[2px_2px_0px_#0E3B2E] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
         >
           <ImagePlus size={16} />
           Change Photo

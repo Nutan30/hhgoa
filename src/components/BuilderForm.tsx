@@ -12,9 +12,7 @@ interface BuilderFormProps {
 
 export default function BuilderForm({ details, onChange }: BuilderFormProps) {
   const handleGenerateTitle = useCallback(() => {
-    const currentIdx = BUILDER_TITLES.indexOf(
-      details.title as (typeof BUILDER_TITLES)[number]
-    );
+    const currentIdx = BUILDER_TITLES.indexOf(details.title as (typeof BUILDER_TITLES)[number]);
     let nextIdx: number;
     do {
       nextIdx = Math.floor(Math.random() * BUILDER_TITLES.length);
@@ -23,14 +21,12 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
   }, [details, onChange]);
 
   const inputClass =
-    "w-full px-4 py-3 rounded-sm bg-[#FFF7E6] border border-[#0E3B2E] text-[#0E3B2E] placeholder-[#145A3D]/45 focus:outline-none focus:border-[#FF2D85] focus:ring-1 focus:ring-[#FF2D85]/30 transition-all text-sm font-medium";
-  const sectionLabelClass =
-    "text-[#145A3D] text-xs font-black tracking-wider uppercase mb-1.5 block";
+    "w-full px-4 py-3 border-2 border-[#0E3B2E] bg-[#FFF7E6] text-[#0E3B2E] placeholder-[#0E3B2E]/30 focus:outline-none focus:border-[#145A3D] focus:ring-2 focus:ring-[#FFD21A]/50 transition-all text-sm font-medium";
 
   return (
-    <div className="poster-card w-full space-y-3 bg-[#FFF7E6] p-4">
+    <div className="w-full space-y-3">
       <label className="block">
-        <span className={sectionLabelClass}>
+        <span className="text-[#0E3B2E]/60 text-xs font-bold tracking-widest uppercase mb-1.5 block font-mono">
           Name
         </span>
         <input
@@ -45,7 +41,7 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
       </label>
 
       <label className="block">
-        <span className={sectionLabelClass}>
+        <span className="text-[#0E3B2E]/60 text-xs font-bold tracking-widest uppercase mb-1.5 block font-mono">
           Stack / Role
         </span>
         <input
@@ -60,7 +56,7 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
       </label>
 
       <div>
-        <span className={sectionLabelClass}>
+        <span className="text-[#0E3B2E]/60 text-xs font-bold tracking-widest uppercase mb-1.5 block font-mono">
           Builder Title
         </span>
         <div className="flex gap-2">
@@ -76,7 +72,7 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
           <button
             id="generate-title-btn"
             onClick={handleGenerateTitle}
-            className="flex items-center gap-1.5 px-4 py-3 rounded-sm bg-[#FF2D85] border border-[#0E3B2E] hover:bg-[#FFD21A] hover:text-[#0E3B2E] text-white text-xs font-black transition-all cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 px-4 py-3 border-2 border-[#0E3B2E] bg-[#FF2D85] hover:bg-[#FF2D85]/80 text-[#FFF7E6] text-xs font-bold tracking-wide transition-all cursor-pointer whitespace-nowrap shadow-[2px_2px_0px_#0E3B2E] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
           >
             <Sparkles size={14} />
             Generate

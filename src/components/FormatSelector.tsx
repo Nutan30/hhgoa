@@ -9,36 +9,31 @@ interface FormatSelectorProps {
   onChange: (format: FormatType) => void;
 }
 
-export default function FormatSelector({
-  selected,
-  onChange,
-}: FormatSelectorProps) {
+export default function FormatSelector({ selected, onChange }: FormatSelectorProps) {
   return (
-    <div className="flex gap-3 w-full max-w-md mx-auto">
-      <button
-        id="select-format-a"
-        onClick={() => onChange("formatA")}
-        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-sm font-black text-sm tracking-wide transition-all duration-300 border-2 border-[#0E3B2E] cursor-pointer ${
-          selected === "formatA"
-            ? "bg-[#FF2D85] text-white shadow-[4px_4px_0_#0E3B2E] -translate-y-0.5"
-            : "bg-[#FFF7E6] text-[#145A3D] hover:bg-[#FFD21A]"
-        }`}
-      >
-        <User size={18} />
-        PFP FRAME
-      </button>
-      <button
-        id="select-format-b"
-        onClick={() => onChange("formatB")}
-        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-sm font-black text-sm tracking-wide transition-all duration-300 border-2 border-[#0E3B2E] cursor-pointer ${
-          selected === "formatB"
-            ? "bg-[#FF2D85] text-white shadow-[4px_4px_0_#0E3B2E] -translate-y-0.5"
-            : "bg-[#FFF7E6] text-[#145A3D] hover:bg-[#FFD21A]"
-        }`}
-      >
-        <CreditCard size={18} />
-        BUILDER ID
-      </button>
+    <div className="flex w-full border-2 border-[#0E3B2E] shadow-[3px_3px_0px_#0E3B2E] overflow-hidden">
+      {(["formatA", "formatB"] as FormatType[]).map((fmt) => {
+        const active = selected === fmt;
+        return (
+          <button
+            key={fmt}
+            id={`select-${fmt}`}
+            onClick={() => onChange(fmt)}
+            className={`relative flex flex-1 items-center justify-center gap-2 px-4 py-3 font-bold text-sm tracking-widest uppercase transition-all duration-150 cursor-pointer border-r-2 last:border-r-0 border-[#0E3B2E] ${
+              active
+                ? "bg-[#145A3D] text-[#FFF7E6]"
+                : "bg-[#FFF7E6] text-[#0E3B2E] hover:bg-[#FFD21A]/30"
+            }`}
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            {fmt === "formatA" ? <User size={15} /> : <CreditCard size={15} />}
+            {fmt === "formatA" ? "PFP Frame" : "Builder ID"}
+            {active && (
+              <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#FFD21A]" />
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }
