@@ -2,26 +2,16 @@
  * Image utility functions for photo upload, HEIC conversion, and dimension helpers.
  */
 
-/**
- * Converts a HEIC/HEIF blob to a JPEG blob with the reference project's
- * browser-compatible HEIF decoder.
- */
-export async function convertHeicToJpeg(file: File): Promise<Blob> {
-  const { heicTo } = await import("heic-to");
-  const jpegBlob = await heicTo({
-    blob: file,
-    type: "image/jpeg",
-    quality: 0.92,
-  });
-
-  if (jpegBlob.size === 0 || jpegBlob.type !== "image/jpeg") {
-    throw new Error("HEIC decoder did not produce a valid JPEG image.");
-  }
-
-  return jpegBlob;
-}
-
-const HEIF_BRANDS = new Set(["mif1", "msf1", "heic", "heix", "hevc", "hevx"]);
+const HEIF_BRANDS = new Set([
+  "mif1",
+  "msf1",
+  "heic",
+  "heix",
+  "hevc",
+  "hevx",
+  "avif",
+  "avis",
+]);
 
 /**
  * Check ISO-BMFF `ftyp` bytes for HEIF/HEIC brands, with metadata fallback.
@@ -32,19 +22,89 @@ export async function isHeicFile(file: File): Promise<boolean> {
   const metadataIndicatesHeic =
     type === "image/heic" ||
     type === "image/heif" ||
+    type === "image/avif" ||
     name.endsWith(".heic") ||
-    name.endsWith(".heif");
+    name.endsWith(".heif") ||
+    name.endsWith(".avif");
 
-  const header = new Uint8Array(await file.slice(0, 32).arrayBuffer());
-  if (header.length >= 12 && String.fromCharCode(...header.slice(4, 8)) === "ftyp") {
-    for (let offset = 8; offset + 4 <= header.length; offset += 4) {
-      if (HEIF_BRANDS.has(String.fromCharCode(...header.slice(offset, offset + 4)))) {
-        return true;
+  const header = new Uint8Array(await file.slice(0, 64).arrayBuffer());
+
+  // ftyp is normally the first box, but some files have a leading "wide" box.
+  const ftypStarts = [0, 8];
+  for (const start of ftypStarts) {
+    if (
+      start + 12 <= header.length &&
+      String.fromCharCode(...header.slice(start + 4, start + 8)) === "ftyp"
+    ) {
+      for (let offset = start + 8; offset + 4 <= header.length; offset += 4) {
+        if (HEIF_BRANDS.has(String.fromCharCode(...header.slice(offset, offset + 4)))) {
+          return true;
+        }
       }
+      break;
     }
   }
 
   return metadataIndicatesHeic;
+}
+
+/**
+ * Convert a HEIC/HEIF file to a JPEG blob using the browser's native image
+ * decoder (createImageBitmap). Handles AV1-coded HEIF/AVIF in Chromium and
+ * HEIC in Safari.
+ */
+async function convertViaNativeDecoder(file: File): Promise<Blob> {
+  const bitmap = await createImageBitmap(file);
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas 2D context unavailable.");
+    ctx.drawImage(bitmap, 0, 0);
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/jpeg", 0.92)
+    );
+    if (!blob) throw new Error("Canvas toBlob failed.");
+    return blob;
+  } finally {
+    bitmap.close();
+  }
+}
+
+/**
+ * Converts a HEIC/HEIF blob to a JPEG blob. Tries the libheif-based decoder
+ * first (handles HEVC-coded HEIC/HEIF), then falls back to the browser's
+ * native decoder (handles AV1-coded HEIF/AVIF and HEIC in Safari).
+ */
+export async function convertHeicToJpeg(file: File): Promise<Blob> {
+  // 1) libheif-based decoder (heic-to) — handles HEVC-coded HEIC/HEIF
+  try {
+    const { heicTo } = await import("heic-to");
+    const jpegBlob = await heicTo({
+      blob: file,
+      type: "image/jpeg",
+      quality: 0.92,
+    });
+    if (jpegBlob.size > 0 && jpegBlob.type === "image/jpeg") {
+      return jpegBlob;
+    }
+  } catch {
+    // fall through to native decoder
+  }
+
+  // 2) Browser-native decoder — handles AV1-coded HEIF/AVIF (Chromium)
+  //    and HEIC (Safari)
+  try {
+    const jpegBlob = await convertViaNativeDecoder(file);
+    if (jpegBlob.size > 0 && jpegBlob.type === "image/jpeg") {
+      return jpegBlob;
+    }
+  } catch {
+    // fall through
+  }
+
+  throw new Error("HEIC/HEIF decoder did not produce a valid JPEG image.");
 }
 
 /**
@@ -118,4 +178,4 @@ export function computeCoverFit(
  * Accepted file types for upload input.
  */
 export const ACCEPTED_FILE_TYPES =
-  "image/jpeg,image/jpg,image/png,image/heic,image/heif,.heic,.heif";
+  "image/jpeg,image/jpg,image/png,image/heic,image/heif,image/avif,.heic,.heif,.avif";
