@@ -83,49 +83,41 @@ export default function ExportActions({ format, userPhoto, transform, builderDet
 
   return (
     <div className="w-full flex flex-col gap-2">
-      {/* Download — full width */}
+      {/* Download — full width, primary yellow */}
       <button
         id="download-png-btn"
         onClick={handleDownload}
         disabled={disabled || isExporting}
-        className={`w-full flex items-center justify-center gap-2 py-3 px-5 font-bold text-sm tracking-widest uppercase transition-all duration-200 border-2 cursor-pointer ${
-          disabled
-            ? "bg-[#0E3B2E]/10 text-[#0E3B2E]/30 border-[#0E3B2E]/20 cursor-not-allowed"
+        className={`hh-btn w-full py-3 text-[11px] ${
+          disabled || isExporting
+            ? "hh-btn hh-btn-primary opacity-35 cursor-not-allowed"
             : downloadDone
-              ? "bg-[#145A3D] text-[#FFF7E6] border-[#0E3B2E] shadow-[3px_3px_0px_#0E3B2E]"
-              : "bg-[#FFD21A] text-[#0E3B2E] border-[#0E3B2E] shadow-[3px_3px_0px_#0E3B2E] hover:bg-[#FFD21A]/80 active:shadow-none active:translate-x-[3px] active:translate-y-[3px]"
+              ? "hh-btn bg-[#0B6839] text-white border-[#0B2818] shadow-[4px_4px_0px_#0B2818]"
+              : "hh-btn hh-btn-primary"
         }`}
       >
-        {isExporting ? <Loader2 size={18} className="animate-spin" /> : downloadDone ? <Check size={18} /> : <Download size={18} />}
+        {isExporting ? <Loader2 size={17} className="animate-spin" /> : downloadDone ? <Check size={17} /> : <Download size={17} />}
         {isExporting ? "Generating..." : downloadDone ? "Downloaded!" : "Download PNG"}
       </button>
 
-      {/* Share row — equal width buttons, same height as Download */}
+      {/* Share row */}
       <div className="flex gap-2">
         <button
           id="share-btn"
           onClick={handleShare}
           disabled={disabled}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 px-3 font-bold text-sm tracking-wide uppercase transition-all duration-200 border-2 cursor-pointer ${
-            disabled
-              ? "bg-[#0E3B2E]/10 text-[#0E3B2E]/30 border-[#0E3B2E]/20 cursor-not-allowed"
-              : "bg-[#FFF7E6] text-[#0E3B2E] border-[#0E3B2E] hover:bg-[#145A3D]/10 shadow-[2px_2px_0px_#0E3B2E] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
-          }`}
+          className="hh-btn hh-btn-secondary flex-1 py-3 text-[11px]"
         >
-          <Share2 size={16} />
+          <Share2 size={15} />
           Share
         </button>
         <button
           id="share-x-btn"
           onClick={handleShareToX}
           disabled={disabled}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 px-3 font-bold text-sm tracking-wide uppercase transition-all duration-200 border-2 cursor-pointer ${
-            disabled
-              ? "bg-[#0E3B2E]/10 text-[#0E3B2E]/30 border-[#0E3B2E]/20 cursor-not-allowed"
-              : "bg-[#FF2D85] text-[#FFF7E6] border-[#0E3B2E] hover:bg-[#FF2D85]/80 shadow-[2px_2px_0px_#0E3B2E] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
-          }`}
+          className="hh-btn hh-btn-pink flex-1 py-3 text-[11px]"
         >
-          <XIcon size={16} />
+          <XIcon size={15} />
           Share to X
         </button>
       </div>

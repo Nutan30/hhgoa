@@ -125,7 +125,7 @@ export default function PreviewCanvas({
   return (
     <div
       ref={containerRef}
-      className="relative border-2 border-[#0E3B2E] shadow-[4px_4px_0px_#0E3B2E]"
+      className="relative border-[3px] border-[#FEE101] shadow-[6px_6px_0px_#000]"
       style={{
         aspectRatio: `${aspectRatio}`,
         maxHeight: "76vh",
@@ -147,18 +147,17 @@ export default function PreviewCanvas({
 
       {!userPhoto && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          {/* Circular placeholder centered in the photo area */}
           <div className="flex flex-col items-center gap-2">
             <div
-              className="rounded-full border-2 border-dashed border-[#0E3B2E]/20 bg-[#0E3B2E]/5 flex items-center justify-center"
+              className="rounded-full border-2 border-dashed border-[#0B6839]/25 bg-[#0B6839]/5 flex items-center justify-center"
               style={{ width: "22%", aspectRatio: "1" }}
             >
               <svg viewBox="0 0 24 24" fill="none" className="w-1/2 h-1/2 opacity-20">
-                <circle cx="12" cy="8" r="4" stroke="#0E3B2E" strokeWidth="1.5"/>
-                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#0E3B2E" strokeWidth="1.5" strokeLinecap="round"/>
+                <circle cx="12" cy="8" r="4" stroke="#FEE101" strokeWidth="1.5"/>
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#FEE101" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
             </div>
-            <p className="text-[#0E3B2E]/25 text-[10px] font-mono tracking-wide">
+            <p className="text-[#FEE101]/30 text-[10px] font-victor tracking-wide">
               Upload a photo to get started
             </p>
           </div>

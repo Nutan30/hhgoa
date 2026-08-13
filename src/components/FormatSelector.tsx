@@ -11,7 +11,7 @@ interface FormatSelectorProps {
 
 export default function FormatSelector({ selected, onChange }: FormatSelectorProps) {
   return (
-    <div className="flex w-full border-2 border-[#0E3B2E] shadow-[3px_3px_0px_#0E3B2E] overflow-hidden">
+    <div className="flex w-full border-2 border-[#FEE101] shadow-[4px_4px_0px_#000] overflow-hidden">
       {(["formatA", "formatB"] as FormatType[]).map((fmt) => {
         const active = selected === fmt;
         return (
@@ -19,17 +19,16 @@ export default function FormatSelector({ selected, onChange }: FormatSelectorPro
             key={fmt}
             id={`select-${fmt}`}
             onClick={() => onChange(fmt)}
-            className={`relative flex flex-1 items-center justify-center gap-2 px-4 py-3 font-bold text-sm tracking-widest uppercase transition-all duration-150 cursor-pointer border-r-2 last:border-r-0 border-[#0E3B2E] ${
+            className={`relative flex flex-1 items-center justify-center gap-2 px-4 py-3 font-victor font-bold text-[11px] tracking-[0.2em] uppercase transition-all duration-150 cursor-pointer border-r-2 last:border-r-0 border-[#FEE101]/40 ${
               active
-                ? "bg-[#145A3D] text-[#FFF7E6]"
-                : "bg-[#FFF7E6] text-[#0E3B2E] hover:bg-[#FFD21A]/30"
+                ? "bg-[#FEE101] text-[#075C35]"
+                : "bg-[#042e1a] text-[#FEE101]/70 hover:bg-[#0B6839]/60 hover:text-[#FEE101]"
             }`}
-            style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            {fmt === "formatA" ? <User size={15} /> : <CreditCard size={15} />}
+            {fmt === "formatA" ? <User size={14} /> : <CreditCard size={14} />}
             {fmt === "formatA" ? "PFP Frame" : "Builder ID"}
             {active && (
-              <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#FFD21A]" />
+              <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#FF1684]" />
             )}
           </button>
         );

@@ -20,13 +20,10 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
     onChange({ ...details, title: BUILDER_TITLES[nextIdx] });
   }, [details, onChange]);
 
-  const inputClass =
-    "w-full px-4 py-3 border-2 border-[#0E3B2E] bg-[#FFF7E6] text-[#0E3B2E] placeholder-[#0E3B2E]/30 focus:outline-none focus:border-[#145A3D] focus:ring-2 focus:ring-[#FFD21A]/50 transition-all text-sm font-medium";
-
   return (
     <div className="w-full space-y-3">
       <label className="block">
-        <span className="text-[#0E3B2E]/60 text-xs font-bold tracking-widest uppercase mb-1.5 block font-mono">
+        <span className="font-victor text-[#FEE101]/60 text-[10px] font-bold tracking-[0.2em] uppercase mb-1.5 block">
           Name
         </span>
         <input
@@ -35,13 +32,13 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
           placeholder="Your Name"
           value={details.name}
           onChange={(e) => onChange({ ...details, name: e.target.value })}
-          className={inputClass}
+          className="hh-input"
           maxLength={30}
         />
       </label>
 
       <label className="block">
-        <span className="text-[#0E3B2E]/60 text-xs font-bold tracking-widest uppercase mb-1.5 block font-mono">
+        <span className="font-victor text-[#FEE101]/60 text-[10px] font-bold tracking-[0.2em] uppercase mb-1.5 block">
           Stack / Role
         </span>
         <input
@@ -50,13 +47,13 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
           placeholder="Full Stack Developer"
           value={details.stack}
           onChange={(e) => onChange({ ...details, stack: e.target.value })}
-          className={inputClass}
+          className="hh-input"
           maxLength={40}
         />
       </label>
 
       <div>
-        <span className="text-[#0E3B2E]/60 text-xs font-bold tracking-widest uppercase mb-1.5 block font-mono">
+        <span className="font-victor text-[#FEE101]/60 text-[10px] font-bold tracking-[0.2em] uppercase mb-1.5 block">
           Builder Title
         </span>
         <div className="flex gap-2">
@@ -66,15 +63,15 @@ export default function BuilderForm({ details, onChange }: BuilderFormProps) {
             placeholder="Code Surfer"
             value={details.title}
             onChange={(e) => onChange({ ...details, title: e.target.value })}
-            className={`${inputClass} flex-1`}
+            className="hh-input flex-1"
             maxLength={25}
           />
           <button
             id="generate-title-btn"
             onClick={handleGenerateTitle}
-            className="flex items-center gap-1.5 px-4 py-3 border-2 border-[#0E3B2E] bg-[#FF2D85] hover:bg-[#FF2D85]/80 text-[#FFF7E6] text-xs font-bold tracking-wide transition-all cursor-pointer whitespace-nowrap shadow-[2px_2px_0px_#0E3B2E] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+            className="hh-btn hh-btn-pink px-4 py-2 text-[10px] whitespace-nowrap"
           >
-            <Sparkles size={14} />
+            <Sparkles size={13} />
             Generate
           </button>
         </div>

@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, IBM_Plex_Mono, Bebas_Neue, Anton } from "next/font/google";
+import { Inter, Victor_Mono, Imbue } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const ibmPlexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-ibm-plex-mono", display: "swap" });
-const bebasNeue = Bebas_Neue({ subsets: ["latin"], weight: "400", variable: "--font-bebas-neue", display: "swap" });
-const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-anton", display: "swap" });
+const victorMono = Victor_Mono({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-victor-mono", display: "swap" });
+const imbue = Imbue({ subsets: ["latin"], weight: ["400", "700", "900"], variable: "--font-imbue", display: "swap" });
 
 export const metadata: Metadata = {
   title: "HH Goa 2026 — Frame in Goa",
@@ -24,7 +23,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`h-full antialiased ${inter.variable} ${ibmPlexMono.variable} ${bebasNeue.variable} ${anton.variable}`}>
+    <html lang="en" className={`h-full antialiased ${inter.variable} ${victorMono.variable} ${imbue.variable}`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

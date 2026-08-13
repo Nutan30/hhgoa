@@ -4,39 +4,38 @@ import React from "react";
 
 export default function Header() {
   return (
-    <header className="w-full bg-[#FFF7E6] border-b-[3px] border-[#0E3B2E]">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <header className="w-full bg-[#042e1a] border-b-[2px] border-[#FEE101]/30">
+      <div className="max-w-5xl mx-auto px-4 py-2.5 flex items-center justify-between gap-4">
 
-        {/* Logo badge — green block with yellow text */}
+        {/* Logo badge */}
         <div className="relative shrink-0">
-          <div className="bg-[#145A3D] border-[3px] border-[#0E3B2E] px-4 py-2 shadow-[4px_4px_0px_#0E3B2E] sticker-tilt-l inline-block">
-            <span
-              className="text-[#FFD21A] tracking-[0.12em] text-xl md:text-2xl leading-none"
-              style={{ fontFamily: "'Anton', sans-serif" }}
-            >
+          <div className="inline-block px-3 py-1.5 border-2 border-[#FEE101] shadow-[3px_3px_0px_#000] sticker-tilt-l bg-[#075C35]">
+            <span className="font-imbue text-[#FEE101] tracking-[0.08em] text-base md:text-lg leading-none font-bold">
               HH GOA &apos;26
             </span>
           </div>
-          {/* Pink pin */}
-          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#FF2D85] border-2 border-[#0E3B2E] z-10" />
         </div>
 
-        {/* Hashtag sticker badges */}
+        {/* Center metadata */}
+        <div className="hidden md:flex flex-col items-center gap-0.5">
+          <span className="font-victor text-[#FEE101]/50 text-[9px] font-bold tracking-[0.3em] uppercase">
+            GOA, INDIA · 28–31 OCT 2026
+          </span>
+        </div>
+
+        {/* Hashtag stickers */}
         <div className="flex items-center gap-2 flex-wrap justify-end">
-          <span className="sticker-tilt-r inline-block bg-[#FFD21A] border-2 border-[#0E3B2E] px-3 py-1 text-[11px] font-bold text-[#0E3B2E] shadow-[2px_2px_0px_#0E3B2E] tracking-wide font-mono">
+          <span className="sticker-tilt-r inline-block bg-[#FEE101] border-2 border-[#000] px-2.5 py-1 text-[9px] font-bold text-[#075C35] shadow-[2px_2px_0px_#000] tracking-wide font-victor">
             #FrameInGoa
           </span>
-          <span className="hidden sm:inline-block sticker-tilt-l bg-[#FF2D85] border-2 border-[#0E3B2E] px-3 py-1 text-[11px] font-bold text-[#FFF7E6] shadow-[2px_2px_0px_#0E3B2E] tracking-wide font-mono">
+          <span className="hidden sm:inline-block sticker-tilt-l bg-[#FF1684] border-2 border-[#000] px-2.5 py-1 text-[9px] font-bold text-white shadow-[2px_2px_0px_#000] tracking-wide font-victor">
             #HHGoa2026
           </span>
-          <span className="hidden md:inline-block sticker-tilt-r bg-[#145A3D] border-2 border-[#0E3B2E] px-3 py-1 text-[11px] font-bold text-[#FFF7E6] shadow-[2px_2px_0px_#0E3B2E] tracking-wide font-mono">
+          <span className="hidden md:inline-block sticker-tilt-r bg-[#FFFBE8] border-2 border-[#000] px-2.5 py-1 text-[9px] font-bold text-[#075C35] shadow-[2px_2px_0px_#000] tracking-wide font-victor">
             #HackerHouse
           </span>
         </div>
       </div>
-
-      {/* Thick green accent stripe */}
-      <div className="h-1.5 bg-[#145A3D]" />
     </header>
   );
 }

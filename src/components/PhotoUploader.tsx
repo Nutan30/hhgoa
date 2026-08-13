@@ -53,15 +53,15 @@ export default function PhotoUploader({ hasPhoto, onFileSelected }: PhotoUploade
           onClick={() => inputRef.current?.click()}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className="w-full flex flex-col items-center justify-center gap-2 p-5 border-2 border-dashed border-[#145A3D] bg-[#FFF7E6] hover:bg-[#FFD21A]/20 transition-all duration-200 cursor-pointer group"
+          className="hh-upload-zone w-full flex flex-col items-center justify-center gap-3 p-6 cursor-pointer group"
         >
-          <div className="w-11 h-11 border-2 border-[#145A3D] bg-[#145A3D]/10 flex items-center justify-center group-hover:bg-[#FFD21A]/40 transition-colors">
-            <Upload size={22} className="text-[#145A3D]" />
+          <div className="w-12 h-12 border-2 border-[#FEE101]/50 bg-[#FEE101]/10 flex items-center justify-center group-hover:bg-[#FEE101]/20 transition-colors">
+            <Upload size={22} className="text-[#FEE101]" />
           </div>
           <div className="text-center">
-            <p className="text-[#0E3B2E] font-bold text-base tracking-wide">Upload Your Photo</p>
-            <p className="text-[#0E3B2E]/50 text-xs mt-1 font-mono">
-              JPG, PNG, or HEIC · Drag & drop or tap to browse
+            <p className="font-victor font-bold text-sm tracking-wide uppercase text-[#FEE101]">Upload Your Photo</p>
+            <p className="font-victor text-[11px] mt-1 text-[#FFFBE8]/40">
+              JPG, PNG, or HEIC · Drag &amp; drop or tap to browse
             </p>
           </div>
         </button>
@@ -69,9 +69,9 @@ export default function PhotoUploader({ hasPhoto, onFileSelected }: PhotoUploade
         <button
           id="change-photo-btn"
           onClick={() => inputRef.current?.click()}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 border-2 border-[#0E3B2E] bg-[#FFF7E6] hover:bg-[#FFD21A]/30 text-[#0E3B2E] transition-all text-sm font-bold tracking-wide cursor-pointer shadow-[2px_2px_0px_#0E3B2E] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+          className="hh-btn hh-btn-secondary w-full py-3"
         >
-          <ImagePlus size={16} />
+          <ImagePlus size={15} />
           Change Photo
         </button>
       )}

@@ -22,7 +22,7 @@ export default function PhotoEditor({ transform, onTransformChange }: PhotoEdito
     <div className="w-full space-y-3">
       {/* Zoom control */}
       <div className="flex items-center gap-3">
-        <ZoomOut size={16} className="text-[#0E3B2E]/50 shrink-0" />
+        <ZoomOut size={15} className="text-[#FEE101]/50 shrink-0" />
         <input
           id="zoom-slider"
           type="range"
@@ -31,41 +31,22 @@ export default function PhotoEditor({ transform, onTransformChange }: PhotoEdito
           step="0.01"
           value={transform.scale}
           onChange={handleZoomChange}
-          className="flex-1 h-2 rounded-none appearance-none cursor-pointer accent-[#145A3D]
-            [&::-webkit-slider-runnable-track]:rounded-none
-            [&::-webkit-slider-runnable-track]:bg-[#0E3B2E]/20
-            [&::-webkit-slider-thumb]:appearance-none
-            [&::-webkit-slider-thumb]:h-5
-            [&::-webkit-slider-thumb]:w-5
-            [&::-webkit-slider-thumb]:rounded-none
-            [&::-webkit-slider-thumb]:bg-[#FFD21A]
-            [&::-webkit-slider-thumb]:border-2
-            [&::-webkit-slider-thumb]:border-[#0E3B2E]
-            [&::-webkit-slider-thumb]:cursor-pointer
-            [&::-moz-range-track]:rounded-none
-            [&::-moz-range-track]:bg-[#0E3B2E]/20
-            [&::-moz-range-thumb]:h-5
-            [&::-moz-range-thumb]:w-5
-            [&::-moz-range-thumb]:rounded-none
-            [&::-moz-range-thumb]:bg-[#FFD21A]
-            [&::-moz-range-thumb]:border-2
-            [&::-moz-range-thumb]:border-[#0E3B2E]
-            [&::-moz-range-thumb]:cursor-pointer"
+          className="hh-slider flex-1"
         />
-        <ZoomIn size={16} className="text-[#0E3B2E]/50 shrink-0" />
+        <ZoomIn size={15} className="text-[#FEE101]/50 shrink-0" />
       </div>
 
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5 text-[#0E3B2E]/40 text-xs font-mono">
-          <Move size={12} />
+        <div className="flex items-center gap-1.5 text-[#FFFBE8]/40 text-[10px] font-victor">
+          <Move size={11} />
           <span>Drag photo to reposition</span>
         </div>
         <button
           id="reset-transform-btn"
           onClick={handleReset}
-          className="flex items-center gap-1.5 px-3 py-1.5 border-2 border-[#0E3B2E] bg-[#FFF7E6] hover:bg-[#FFD21A]/40 text-[#0E3B2E] text-xs font-bold tracking-wide transition-all cursor-pointer shadow-[2px_2px_0px_#0E3B2E] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+          className="hh-btn hh-btn-secondary px-3 py-1.5 text-[10px]"
         >
-          <RotateCcw size={12} />
+          <RotateCcw size={11} />
           Reset
         </button>
       </div>

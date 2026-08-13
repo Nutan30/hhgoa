@@ -1,47 +1,272 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #FFF7E6;
-  --color-foreground: #0E3B2E;
+  --color-background: #075C35;
+  --color-foreground: #FEE101;
   --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-mono: var(--font-ibm-plex-mono), monospace;
-  --font-display: var(--font-anton), var(--font-bebas-neue), sans-serif;
+  --font-mono: var(--font-victor-mono), monospace;
+  --font-display: var(--font-imbue), serif;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
 body {
-  background: #FFF7E6;
-  color: #0E3B2E;
+  background: #075C35;
+  color: #FFFBE8;
   font-family: var(--font-inter), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Retro diamond doodle background */
-.bg-doodle {
-  background-color: #FFF7E6;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%230E3B2E' stroke-width='0.5' opacity='0.07'%3E%3Cellipse cx='40' cy='20' rx='14' ry='18'/%3E%3Cellipse cx='40' cy='60' rx='14' ry='18'/%3E%3Cellipse cx='20' cy='40' rx='18' ry='14'/%3E%3Cellipse cx='60' cy='40' rx='18' ry='14'/%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: repeat;
+/* ── HH Goa hero brand animation ── */
+@keyframes goaFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+  50%       { transform: translate(-50%, -50%) translateY(-5px); }
 }
 
-/* Yellow underline accent */
-.underline-yellow {
-  text-decoration: underline;
-  text-decoration-color: #FFD21A;
-  text-decoration-thickness: 4px;
-  text-underline-offset: 4px;
+.goa-sticker {
+  animation: goaFloat 2s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goa-sticker {
+    animation: none;
+  }
+}
+
+/* Deep green poster background — very subtle grain texture */
+.bg-poster {
+  background-color: #075C35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* Imbue display font utility */
+.font-imbue {
+  font-family: var(--font-imbue), 'Georgia', serif;
+}
+
+/* Victor Mono utility */
+.font-victor {
+  font-family: var(--font-victor-mono), monospace;
 }
 
 /* Sticker rotate variants */
 .sticker-tilt-l { transform: rotate(-1.5deg); }
 .sticker-tilt-r { transform: rotate(1.5deg); }
+.sticker-tilt-ll { transform: rotate(-3deg); }
+.sticker-tilt-rr { transform: rotate(3deg); }
+
+/* HH Goa hard offset shadows */
+.shadow-hh       { box-shadow: 4px 4px 0px #000; }
+.shadow-hh-sm    { box-shadow: 3px 3px 0px #000; }
+.shadow-hh-xs    { box-shadow: 2px 2px 0px #000; }
+.shadow-hh-y     { box-shadow: 4px 4px 0px #FEE101; }
+.shadow-hh-y-sm  { box-shadow: 3px 3px 0px #FEE101; }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #FFF7E6; }
-::-webkit-scrollbar-thumb { background: #145A3D; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #0E3B2E; }
+::-webkit-scrollbar-track { background: #075C35; }
+::-webkit-scrollbar-thumb { background: #FEE101; border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: #FF1684; }
 
-::selection { background: #FFD21A; color: #0E3B2E; }
+::selection { background: #FEE101; color: #075C35; }
+
+/* ── HH Goa Slider ── */
+input[type="range"].hh-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+input[type="range"].hh-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #FFFBE8;
+  border-radius: 0;
+  border: 1.5px solid #000;
+}
+
+input[type="range"].hh-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #FEE101;
+  border: 2px solid #000;
+  border-radius: 0;
+  margin-top: -8px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #000;
+}
+
+input[type="range"].hh-slider::-moz-range-track {
+  height: 6px;
+  background: #FFFBE8;
+  border-radius: 0;
+  border: 1.5px solid #000;
+}
+
+input[type="range"].hh-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #FEE101;
+  border: 2px solid #000;
+  border-radius: 0;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px #000;
+}
+
+/* ── HH Goa Input — cream on green ── */
+.hh-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #FFFBE8;
+  background: rgba(255,251,232,0.08);
+  color: #FFFBE8;
+  font-family: var(--font-victor-mono), monospace;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.hh-input::placeholder {
+  color: rgba(255,251,232,0.35);
+  font-family: var(--font-victor-mono), monospace;
+}
+
+.hh-input:focus {
+  border-color: #FEE101;
+  box-shadow: 0 0 0 3px rgba(254,225,1,0.2), 2px 2px 0px #000;
+}
+
+/* ── HH Goa Panel — dark green card on deep green bg ── */
+.hh-panel {
+  border: 2px solid #FEE101;
+  background: rgba(0,0,0,0.25);
+  box-shadow: 4px 4px 0px #000;
+}
+
+.hh-panel-header {
+  background: #0B6839;
+  border-bottom: 2px solid #FEE101;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hh-panel-header span {
+  color: #FEE101;
+  font-family: var(--font-victor-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hh-panel-body {
+  padding: 14px;
+}
+
+/* ── HH Goa Button Base ── */
+.hh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 2px solid #000;
+  font-family: var(--font-victor-mono), monospace;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 0;
+  transition: box-shadow 0.1s, transform 0.1s;
+  padding: 12px 20px;
+}
+
+.hh-btn:active {
+  box-shadow: none !important;
+  transform: translate(3px, 3px);
+}
+
+.hh-btn-primary {
+  background: #FEE101;
+  color: #075C35;
+  box-shadow: 4px 4px 0px #000;
+}
+
+.hh-btn-primary:hover:not(:disabled) {
+  background: #ffe000;
+}
+
+.hh-btn-secondary {
+  background: #FFFBE8;
+  color: #075C35;
+  box-shadow: 3px 3px 0px #000;
+}
+
+.hh-btn-secondary:hover:not(:disabled) {
+  background: #fff5c0;
+}
+
+.hh-btn-pink {
+  background: #FF1684;
+  color: #FFFFFF;
+  box-shadow: 3px 3px 0px #000;
+}
+
+.hh-btn-pink:hover:not(:disabled) {
+  background: #e0126f;
+}
+
+.hh-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ── Upload zone on green bg ── */
+.hh-upload-zone {
+  border: 2px dashed rgba(254,225,1,0.5);
+  background: rgba(0,0,0,0.2);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.hh-upload-zone:hover {
+  background: rgba(254,225,1,0.08);
+  border-color: #FEE101;
+}
+
+/* ── Section label line ── */
+.hh-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+}
+
+.hh-section-label-text {
+  font-family: var(--font-victor-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(254,225,1,0.7);
+  white-space: nowrap;
+}
+
+.hh-section-label-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(254,225,1,0.2);
+}
