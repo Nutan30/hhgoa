@@ -239,7 +239,7 @@ function renderBuilderText(
 ): void {
   const leftX = 500;
   const maxWidth = 1300; // Safe area width from X=500 to X=1800
-  const fontFamily = "'Bodoni Moda', 'Comic Sans MS', 'Comic Sans', cursive";
+  const fontFamily = " 'Georgia', 'Bodoni Moda', 'Comic Sans MS', 'Comic Sans', cursive";
   const fontSize = 100;
   const textColor = "#FFE9A8";
 
