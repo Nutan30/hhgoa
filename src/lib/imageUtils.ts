@@ -89,6 +89,26 @@ async function convertViaNativeDecoder(file: File): Promise<Blob> {
 }
 
 /**
+ * Warm up the HEIC decoder worker so the first real conversion is fast.
+ * The worker and libheif module are initialized in the background during
+ * page load instead of on the first photo upload.
+ */
+export async function preloadHeicDecoder(): Promise<void> {
+  try {
+    const { heicTo } = await import("heic-to");
+    // Trigger worker creation + libheif init with a dummy blob.
+    // This call is expected to fail (invalid data), but it warms the worker.
+    await heicTo({
+      blob: new Blob([new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0])], { type: "image/heic" }),
+      type: "image/jpeg",
+      quality: 0.92,
+    });
+  } catch {
+    // Expected — dummy blob is not a valid HEIC. Worker is now warm.
+  }
+}
+
+/**
  * Converts a HEIC/HEIF blob to a JPEG blob. Tries the libheif-based decoder
  * first (handles HEVC-coded HEIC/HEIF), then falls back to the browser's
  * native decoder (handles AV1-coded HEIF/AVIF and HEIC in Safari).
