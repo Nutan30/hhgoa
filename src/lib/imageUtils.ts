@@ -13,61 +13,135 @@ interface Heic2any {
 
 /**
  * Converts a HEIC/HEIF blob to a JPEG blob using heic2any.
- *
- * heic2any is loaded as a plain global script in layout.tsx.
  */
 export async function convertHeicToJpeg(file: File): Promise<Blob> {
-  const g = globalThis as typeof globalThis & {
-    heic2any?: Heic2any;
-  };
-
-  const heic2any = g.heic2any;
-
-  if (typeof heic2any !== "function") {
-    throw new Error(
-      "heic2any library failed to load. Check that /heic2any.min.js loaded."
-    );
-  }
-
+  // Dynamic import to avoid SSR issues
+  const heic2any = (await import("heic2any")).default;
   const result = await heic2any({
     blob: file,
     toType: "image/jpeg",
     quality: 0.92,
   });
-
-  // heic2any can return either Blob or Blob[]
+  // heic2any can return Blob or Blob[]
   if (Array.isArray(result)) {
-    if (!result[0]) {
-      throw new Error("HEIC conversion returned no image.");
-    }
-
     return result[0];
   }
-
   return result;
 }
 
 /**
- * Check if a file is HEIC/HEIF format.
+ * Check ISO-BMFF `ftyp` bytes for HEIF/HEIC brands, with metadata fallback.
  */
-export function isHeicFile(file: File): boolean {
+export async function isHeicFile(file: File): Promise<boolean> {
   const type = file.type.toLowerCase();
   const name = file.name.toLowerCase();
-
   return (
     type === "image/heic" ||
     type === "image/heif" ||
+    type === "image/avif" ||
     name.endsWith(".heic") ||
-    name.endsWith(".heif")
-  );
+    name.endsWith(".heif") ||
+    name.endsWith(".avif");
+
+  const header = new Uint8Array(await file.slice(0, 64).arrayBuffer());
+
+  // ftyp is normally the first box, but some files have a leading "wide" box.
+  const ftypStarts = [0, 8];
+  for (const start of ftypStarts) {
+    if (
+      start + 12 <= header.length &&
+      String.fromCharCode(...header.slice(start + 4, start + 8)) === "ftyp"
+    ) {
+      for (let offset = start + 8; offset + 4 <= header.length; offset += 4) {
+        if (HEIF_BRANDS.has(String.fromCharCode(...header.slice(offset, offset + 4)))) {
+          return true;
+        }
+      }
+      break;
+    }
+  }
+
+  return metadataIndicatesHeic;
 }
 
 /**
- * Load an image from a URL.
- *
- * Important:
- * Do NOT set crossOrigin for local blob URLs created with
- * URL.createObjectURL().
+ * Convert a HEIC/HEIF file to a JPEG blob using the browser's native image
+ * decoder (createImageBitmap). Handles AV1-coded HEIF/AVIF in Chromium and
+ * HEIC in Safari.
+ */
+async function convertViaNativeDecoder(file: File): Promise<Blob> {
+  const bitmap = await createImageBitmap(file);
+  try {
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas 2D context unavailable.");
+    ctx.drawImage(bitmap, 0, 0);
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/jpeg", 0.92)
+    );
+    if (!blob) throw new Error("Canvas toBlob failed.");
+    return blob;
+  } finally {
+    bitmap.close();
+  }
+}
+
+/**
+ * Converts a HEIC/HEIF blob to a JPEG blob. Tries the libheif-based decoder
+ * first (handles HEVC-coded HEIC/HEIF), then falls back to the browser's
+ * native decoder (handles AV1-coded HEIF/AVIF and HEIC in Safari).
+ */
+export async function convertHeicToJpeg(file: File): Promise<Blob> {
+  // 1) libheif-based decoder (heic-to) — handles HEVC-coded HEIC/HEIF
+  try {
+    const { heicTo } = await import("heic-to");
+    const jpegBlob = await heicTo({
+      blob: file,
+      type: "image/jpeg",
+      quality: 0.92,
+    });
+    if (jpegBlob.size > 0 && jpegBlob.type === "image/jpeg") {
+      return jpegBlob;
+    }
+  } catch {
+    // fall through to native decoder
+  }
+
+  // 2) Browser-native decoder — handles AV1-coded HEIF/AVIF (Chromium)
+  //    and HEIC (Safari)
+  try {
+    const jpegBlob = await convertViaNativeDecoder(file);
+    if (jpegBlob.size > 0 && jpegBlob.type === "image/jpeg") {
+      return jpegBlob;
+    }
+  } catch {
+    // fall through
+  }
+
+  throw new Error("HEIC/HEIF decoder did not produce a valid JPEG image.");
+}
+
+/**
+ * Process an uploaded file: converts HEIC if needed, returns an object URL.
+ */
+export async function processUploadedFile(file: File): Promise<string> {
+  if (isHeicFile(file)) {
+    try {
+      const jpegBlob = await convertHeicToJpeg(file);
+      return URL.createObjectURL(jpegBlob);
+    } catch (err) {
+      console.warn("HEIC conversion failed, attempting direct load:", err);
+      // Some browsers can handle HEIC natively
+      return URL.createObjectURL(file);
+    }
+  }
+  return URL.createObjectURL(file);
+}
+
+/**
+ * Load an Image element from a URL and return it when loaded.
  */
 export function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
