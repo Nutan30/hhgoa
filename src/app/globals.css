@@ -3,6 +3,7 @@
 @theme inline {
   --color-background: #075C35;
   --color-foreground: #FEE101;
+  --color-beige: #E8DCC9;
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-mono: var(--font-victor-mono), monospace;
   --font-display: var(--font-imbue), serif;
@@ -164,6 +165,7 @@ input[type="range"].hh-slider::-moz-range-thumb {
 
 .hh-panel-header {
   background: #0B6839;
+  border-top: 3px solid #E8DCC9;
   border-bottom: 2px solid #FEE101;
   padding: 8px 14px;
   display: flex;
@@ -218,13 +220,13 @@ input[type="range"].hh-slider::-moz-range-thumb {
 }
 
 .hh-btn-secondary {
-  background: #FFFBE8;
+  background: #E8DCC9;
   color: #075C35;
   box-shadow: 3px 3px 0px #000;
 }
 
 .hh-btn-secondary:hover:not(:disabled) {
-  background: #fff5c0;
+  background: #d4c3a8;
 }
 
 .hh-btn-pink {
@@ -251,8 +253,8 @@ input[type="range"].hh-slider::-moz-range-thumb {
 }
 
 .hh-upload-zone:hover {
-  background: rgba(254,225,1,0.08);
-  border-color: #FEE101;
+  background: rgba(232, 220, 201, 0.12);
+  border-color: #E8DCC9;
 }
 
 /* ── Section label line ── */
@@ -269,12 +271,12 @@ input[type="range"].hh-slider::-moz-range-thumb {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(254,225,1,0.7);
+  color: rgba(232, 220, 201, 0.8);
   white-space: nowrap;
 }
 
 .hh-section-label-line {
   flex: 1;
   height: 1px;
-  background: rgba(254,225,1,0.2);
+  background: rgba(232, 220, 201, 0.35);
 }
