@@ -285,7 +285,7 @@ export default function Home() {
               <div className="hh-panel">
                 <div className="hh-panel-header">
                   <span>Builder Details</span>
-                  <span className="ml-auto bg-[#FEE101] border border-[#000] px-1.5 py-0.5 text-[9px] font-bold text-[#2E7D1A] tracking-wide font-victor shrink-0">
+                  <span className="ml-auto bg-[#c90aa0] border border-[#000] px-1.5 py-0.5 text-[9px] font-bold text-[#2E7D1A] tracking-wide font-victor shrink-0">
                     ID CARD
                   </span>
                 </div>
