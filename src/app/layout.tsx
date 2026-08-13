@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Victor_Mono, Imbue } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
@@ -24,7 +25,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`h-full antialiased ${inter.variable} ${victorMono.variable} ${imbue.variable}`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        {/* heic2any is a UMD/CommonJS bundle with embedded WASM/worker code.
+            Loading it as a plain global script (window.heic2any) avoids the
+            bundler interop issues that break HEIC conversion in production. */}
+        <Script
+          src="/heic2any.min.js"
+          strategy="beforeInteractive"
+        />
+      </body>
     </html>
   );
 }
