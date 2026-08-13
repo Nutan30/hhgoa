@@ -45,8 +45,8 @@ export const FORMAT_A_GEOMETRY: FrameGeometry = {
   outputHeight: 1080,
   clipType: "circle",
   circleCenterX: 1254,
-  circleCenterY: 1211,
-  circleRadius: 850,
+  circleCenterY: 1200,
+  circleRadius: 950,
 };
 
 export const FORMAT_B_GEOMETRY: FrameGeometry = {
