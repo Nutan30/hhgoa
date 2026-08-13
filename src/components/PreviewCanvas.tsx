@@ -149,15 +149,15 @@ export default function PreviewCanvas({
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="flex flex-col items-center gap-2">
             <div
-              className="rounded-full border-2 border-dashed border-[#0B6839]/25 bg-[#0B6839]/5 flex items-center justify-center"
+              className="rounded-full border-2 border-dashed border-[#0B6839]/25 flex items-center justify-center"
               style={{ width: "22%", aspectRatio: "1" }}
             >
-              <svg viewBox="0 0 24 24" fill="none" className="w-1/2 h-1/2 opacity-20">
+              <svg viewBox="0 0 24 24" fill="none" className="w-1/2 h-1/2 opacity-20 translate-y-[-25px]">
                 <circle cx="12" cy="8" r="4" stroke="#FEE101" strokeWidth="1.5"/>
                 <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#FEE101" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
             </div>
-            <p className="text-[#FEE101]/30 text-[10px] font-victor tracking-wide">
+            <p className="text-[#FEE101]/30 text-[8px] font-victor tracking-wide translate-y-[-40px]">
               Upload a photo to get started
             </p>
           </div>
