@@ -1,15 +1,3 @@
-/**
- * Canvas composition engine for rendering Format A (PFP) and Format B (Builder ID).
- *
- * Architecture:
- *   1. Create offscreen canvas at native overlay resolution
- *   2. Clip to photo window geometry (circle or rounded rect)
- *   3. Draw user photo with transform (scale, offset) inside clip
- *   4. Reset clip, draw overlay artwork on top
- *   5. For Format B: render text fields (name, stack, title)
- *   6. If output resolution differs, scale down to final output
- */
-
 import {
   type FormatType,
   type TransformState,
@@ -239,7 +227,7 @@ function renderBuilderText(
 ): void {
   const leftX = 500;
   const maxWidth = 1300; // Safe area width from X=500 to X=1800
-  const fontFamily = "'Comic Sans MS', 'Comic Sans', cursive";
+  const fontFamily = " 'Georgia', 'Bodoni Moda', 'Comic Sans MS', 'Comic Sans', cursive";
   const fontSize = 100;
   const textColor = "#FFE9A8";
 
@@ -285,7 +273,7 @@ function renderBuilderText(
 
     const metrics = ctx.measureText(titleText);
     const pillWidth = Math.min(metrics.width + 44, maxWidth);
-    const pillHeight = Math.max(48, fittedFontSize + 14);
+    const pillHeight = Math.max(50, fittedFontSize + 18);
     const pillX = leftX;
     const pillY = 2690;
 
